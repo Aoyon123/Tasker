@@ -22,20 +22,34 @@ export default function TaskBoard(){
     const [showAddModal,setShowAddModal] = useState(false);
     const [taskToUpdate,setTaskToUpdate] = useState(null);
 
-    function handleAddTask(newTask){
-        console.log("Adding a task",newTask);
+    function handleAddTask(newTask,isAdd){
+       if(isAdd){
         setTasks([...tasks,newTask]);
+       }
+       else{
+        setTasks(
+            tasks.map((task)=>{
+                if(task.id== newTask.id){
+                    return newTask;
+                }
+                return task;
+            })
+        )
+       }
         setShowAddModal(false);
     }
    
     function handleEditTask(task){
+
         setTaskToUpdate(task);
         setShowAddModal(true);
     }
 
     return (
         <section className="mb-20" id="tasks">
-            {showAddModal && <AddTaskModal onSave={handleAddTask}/>}
+            {showAddModal && <AddTaskModal onSave={handleAddTask}
+            taskToUpdate={taskToUpdate}
+            />}
 		<div className="container">
 		<div className="p-2 flex justify-end">
 		 <SearchTask />
